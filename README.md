@@ -2,4 +2,4 @@
 A Simple BEM Oriented CSS Framework
 
 ## Documentation
-*[Usage](https://trivision-developer.github.io/bem-flexbox-grid-sass/index.html)*
+<a href="https://trivision-developer.github.io/bem-flexbox-grid-sass/index.html" target="_blank">Usage</a>
