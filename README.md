@@ -2,7 +2,7 @@
 A Simple BEM Oriented CSS Framework
 
 ## Usage
-Clone repo to `scss` folder and add links to `_settings.scss` file
+Clone/download repo to `scss` folder and add `@import '_flexboxgrid.scss';` in `_settings.scss` file
 
 ## Grid Layout Examples
 <a href="https://trivision-developer.github.io/bem-flexbox-grid-sass/index.html" target="_blank">Usage</a>
