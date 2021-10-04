@@ -1,4 +1,4 @@
-# bem-flexbox-grid-sass
+# BEM Flexbox Grid with SaSS
 A Simple BEM Oriented CSS Framework
 
 ## Usage
