@@ -1,0 +1,152 @@
+// Centering Elements without flexbox
+// USAGE:
+/* .foo-parent {
+        position: relative;
+        .foo-child {
+            @include center(both/vertical/horizontal);
+        }
+    } */
+@mixin center($position) {
+    position: absolute;
+
+    @if $position=='vertical' {
+        top: 50%;
+        -webkit-transform: translateY(-50%);
+        -ms-transform: translateY(-50%);
+        transform: translateY(-50%);
+    }
+
+    @else if $position=='horizontal' {
+        left: 50%;
+        -webkit-transform: translateX(-50%);
+        -ms-transform: translateX(-50%);
+        transform: translate(-50%);
+    }
+
+    @else if $position=='both' {
+        top: 50%;
+        left: 50%;
+        -webkit-transform: translate(-50%, -50%);
+        -ms-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
+    }
+}
+
+// rem-calc
+// Converts one or more pixel values into matching rem values.
+// USAGE: font-size: rem-calc(24);
+$rem-base: 16px;
+
+@function strip-unit($num) {
+    @return $num / ($num * 0 + 1);
+}
+
+@function convert-to-rem($value, $base-value: $rem-base) {
+    $value: strip-unit($value) / strip-unit($base-value) * 1rem;
+
+    @if ($value==0rem) {
+        $value: 0;
+    }
+
+    // Turn 0rem into 0
+    @return $value;
+}
+
+@function rem-calc($values, $base-value: $rem-base) {
+    $max: length($values);
+
+    @if $max==1 {
+        @return convert-to-rem(nth($values, 1), $base-value);
+    }
+
+    $remValues: ();
+
+    @for $i from 1 through $max {
+        $remValues: append($remValues, convert-to-rem(nth($values, $i), $base-value));
+    }
+
+    @return $remValues;
+}
+
+// Dynamic Margin and Padding
+// https://stackoverflow.com/a/57954780/14867194
+@function get-spacing($keys...) {
+    $list: ();
+
+    @for $i from 1 through length($keys) {
+        $key: nth($keys, $i);
+
+        @if map-has-key($global-spacing, $key) {
+            @if length($keys)==1 {
+                $list: map-get($global-spacing, $key) * 1px;
+            }
+
+            @else {
+                $list: append($list, map-get($global-spacing, $key) * 1px, space);
+            }
+        }
+
+        @else {
+            @error '#{$key} does not exist in the $global-spacing map.  Allowed values are #{$global-spacing}.';
+            @return null;
+        }
+    }
+
+    @return $list;
+}
+
+// margin and padding values array
+$space-values : (
+    0,
+    3,
+    5,
+    10,
+    15,
+    20,
+    25,
+    30,
+    35,
+    40,
+    45,
+    50,
+    60,
+    80,
+    90,
+    100,
+    110,
+    120,
+    auto) !default;
+
+// margin and padding shorthands
+$space-prefixes : (
+    p : padding,
+    p-t : padding-top,
+    p-r : padding-right,
+    p-b : padding-bottom,
+    p-l : padding-left,
+    m : margin,
+    m-t : margin-top,
+    m-r : margin-right,
+    m-b : margin-bottom,
+    m-l : margin-left,
+    m-l-auto : margin-left) !default;
+
+
+@mixin make-spaces() {
+
+    @each $attr-short,
+    $attr-long in $space-prefixes {
+        @each $value in $space-values {
+            .#{$attr-short}-#{$value} {
+                @if $value=='auto !important' {
+                    /*add the @if loop*/
+                    #{$attr-long}:#{$value};
+                }
+
+                @else {
+                    #{$attr-long}: #{$value}#{'px'};
+                }
+            }
+        }
+    }
+}

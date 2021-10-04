@@ -1,4 +1,4 @@
-// An block has an element.
+// A block has an element.
 @mixin has($element) {
   &__#{$element} {
     @content;
